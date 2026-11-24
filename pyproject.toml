@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "osw-scraper"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = ["playwright", "pydantic>=2"]
+dependencies = ["playwright==1.65.2", "pydantic>=2"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
