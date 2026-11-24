@@ -11,6 +11,9 @@ dependencies = ["playwright", "pydantic>=2"]
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 
+[project.scripts]
+osw-scraper = "osw_scraper.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
