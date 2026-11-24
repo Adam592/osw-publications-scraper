@@ -22,6 +22,7 @@ TYPE_LABELS = {
     "analizy": "Analizy",
     "komentarze-osw": "Komentarze OSW",
     "raport-osw": "Raport OSW",
+    "punkt-widzenia": "Punkt widzenia",
 }
 
 class ParseError(ValueError):
@@ -77,17 +78,17 @@ def parse_item(raw: RawItem, regions: list[str] | None = None) -> Publication:
     if not title:
         raise ParseError("Title is empty after normalization")
 
+    slug = url_match.group("type_slug")
+    pub_type = TYPE_LABELS.get(slug, slug.replace("-", " ").capitalize())
     url_date = url_match.group("date")
+
     meta = parse_meta_line(raw.context) if raw.context else None
 
     if not meta:
-        slug = url_match.group("type_slug")
-        pub_type = TYPE_LABELS.get(slug, slug.replace("-", " ").capitalize())
         published = url_date
         authors = []
-        logger.debug("Meta line not found, using URL for type and date: %s, %s", raw.url)
+        logger.debug("Meta line not found for %s, using date from URL", raw.url)
     else:
-        pub_type = meta.pub_type
         published = meta.published
         authors = meta.authors
 

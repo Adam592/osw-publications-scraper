@@ -19,9 +19,14 @@ def test_listing_url_with_page_and_region():
 
 @pytest.mark.skipif(not os.getenv("OSW_LIVE_TESTS"), reason="set OSW_LIVE_TESTS=1 to hit the real site")
 def test_first_page_of_real_listing():
-    with OswScraper(Settings(max_pages=1)) as scraper:
-        items = scraper.fetch_listing(0)
+    with OswScraper(Settings(max_pages=2, delay_seconds=1)) as scraper:
+        pages = list(scraper.iter_listing())
 
-    assert 5 <= len(items) <= 20
-    publications = [parse_item(item) for item in items]
+    assert [page_no for page_no, _ in pages] == [0, 1]
+    assert all(5 <= len(items) <= 20 for _, items in pages)
+
+    urls = [item.url for _, items in pages for item in items]
+    assert len(urls) == len(set(urls))
+
+    publications = [parse_item(item) for _, items in pages for item in items]
     assert all(pub.published.year >= 2001 for pub in publications)

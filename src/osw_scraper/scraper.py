@@ -176,8 +176,8 @@ class OswScraper:
             if not items:
                 logger.info("Page %d is empty, end of listing", page_no)
                 return
-        yield page_no, items
-        time.sleep(self.settings.delay_seconds)
+            yield page_no, items
+            time.sleep(self.settings.delay_seconds)
 
 
     def discover_regions(self) -> dict[str, str]:

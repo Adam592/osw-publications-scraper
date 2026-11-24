@@ -96,3 +96,7 @@ def test_parse_item_title_is_single_line():
 def test_parse_item_rejects_invalid(raw):
     with pytest.raises(ParseError):
         parse_item(raw)
+
+def test_type_comes_from_url_not_from_styled_text():
+    pub = parse_item(make("ANALIZY | 2025-11-05 | Jan Kowalski"))
+    assert pub.pub_type == "Analizy"
